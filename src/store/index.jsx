@@ -1,7 +1,8 @@
-import { createGlobalState } from 'react-hooks-global-state'
-import moment from 'moment'
+import { createGlobalState } from "react-hooks-global-state"
 
-const { getGlobalState, useGlobalState, setGlobalState } = createGlobalState({
+
+
+const {getGlobalState, useGlobalState, setGlobalState} = createGlobalState( {
   contestModal: 'scale-0',
   createPollModal: 'scale-0',
   updatePollModal: 'scale-0',
@@ -18,6 +19,7 @@ const { getGlobalState, useGlobalState, setGlobalState } = createGlobalState({
   isLogged: false,
   user_name: ''
 })
+
 
 const truncate = (text, startChars, endChars, maxLength) => {
   if (text.length > maxLength) {

@@ -1,4 +1,4 @@
-import { setGlobalState, useGlobalState } from '../store'
+import {useGlobalState, setGlobalState, getGlobalState} from '../store'
 import { FaTimes } from 'react-icons/fa'
 import { useState } from 'react'
 import { createPoll } from '../Blockchain.services'

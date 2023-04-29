@@ -107,11 +107,11 @@ const Register = () => {
           <button
             type="submit"
             className="flex flex-row justify-center items-center
-              w-full text-white text-md bg-blue-500
+              w-full text-white text-md bg-black
               py-2 px-5 rounded-full drop-shadow-xl
               border-transparent border
-              hover:bg-transparent hover:text-blue-500
-              hover:border hover:border-blue-500
+              hover:bg-transparent hover:text-green-500
+              hover:border hover:border-green-500
               focus:outline-none focus:ring mt-5"
           >
             Register

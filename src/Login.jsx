@@ -1,34 +1,42 @@
-import React, {useState, useEffect} from 'react'
-import { useAccount, useConnect, useDisconnect } from 'wagmi'
-import { InjectedConnector } from 'wagmi/connectors/injected'
-import { useWeb3ModalTheme, Web3Modal } from '@web3modal/react'
+import React, { useEffect, useState} from 'react'
 
 import { useGlobalState, setGlobalState } from './store'
 import Container from './Container'
 import Header from './components/Header'
 
+
  
 function Login() {
-   const [isLogged] = useGlobalState('isLogged')
-   const [userInfo, setUserInfo] = useState({ name: '', email: '', _id: '' });
+   const [isLogged] =  useGlobalState('isLogged')
+   const [loading, setLoading] = useState(false)
    const projectID = 'IDecideVotingApp.myapp.in'
    const scope = 'full'
    const redirectURL = 'http://localhost:3000'
-
-   const handleLogin = () =>{
-    window.location.href = `http://localhost:5000/login?projectID=${projectID}&scope=${scope}&redirectURL=${redirectURL}`
-   }
-
-
+ 
+  const user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : false;
 
    useEffect(() => {
-     getAccessToken();
-   }, []);
+    
+      if(user && user.logged){
+          setGlobalState('isLogged', true);
+          setGlobalState('user_name', user.user_name);
+          setGlobalState('role', user.role);
+      }      
+          getAccessToken();
+  
+  }, []);
  
+   const handleLogin = (e) =>{
+    
+    window.location.href = `http://localhost:5000/login?projectID=${projectID}&scope=${scope}&redirectURL=${redirectURL}`
+    
+    
+   }
+
    function getAccessToken() {
      const projectSecret = '07299f8e04034332e72602fc39dea446ac4fb604b06e14a900262a61bb9ecc8e';
      const search = window.location.search + `&projectID=${projectID}&scope=${scope}&redirectURL=${redirectURL}&projectSecret=${projectSecret}`;
- 
+    
      fetch('http://localhost:5000/api/oauth/token' + search, {
        method: 'GET',
        headers: {
@@ -44,6 +52,7 @@ function Login() {
        })
        .then((jsonData) => {
          getUserInfo(jsonData.access_token);
+        
        })
        .catch((error) => {
          console.log(error);
@@ -68,11 +77,16 @@ function Login() {
          }
        })
        .then((jsonData) => {
-         setUserInfo(jsonData);
-         console.log(jsonData.name)
+        console.log(jsonData), 'yaa'
          setGlobalState('role', jsonData.role)
          setGlobalState('user_name', jsonData.name)
          setGlobalState('isLogged',true)
+         setIsLogged(true)
+         sessionStorage.setItem('user', JSON.stringify({
+          'user_name': jsonData.name,
+          'logged': true,
+          'role': jsonData.role
+        }));
        })
        .catch((error) => {
          console.log(error);
