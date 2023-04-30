@@ -9,9 +9,9 @@ import Header from './components/Header'
 function Login() {
    const [isLogged] =  useGlobalState('isLogged')
    const [loading, setLoading] = useState(false)
-   const projectID = 'IDecideVotingApp.myapp.in'
+   const projectID = 'IDecideVotingDapp.myapp.in'
    const scope = 'full'
-   const redirectURL = 'http://localhost:3000'
+   const redirectURL = 'https://i-decide.vercel.app/'
  
   const user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : false;
 
@@ -28,16 +28,16 @@ function Login() {
  
    const handleLogin = (e) =>{
     
-    window.location.href = `http://localhost:5000/login?projectID=${projectID}&scope=${scope}&redirectURL=${redirectURL}`
+    window.location.href = `https://fire-puzzling-beluga.glitch.me/login?projectID=${projectID}&scope=${scope}&redirectURL=${redirectURL}`
     
     
    }
 
    function getAccessToken() {
-     const projectSecret = '07299f8e04034332e72602fc39dea446ac4fb604b06e14a900262a61bb9ecc8e';
+     const projectSecret = 'a6a7edcbd61fe04ee445c9d4a904b05bd785b7bb9c1f4f5bf3a6ea229ba86f49';
      const search = window.location.search + `&projectID=${projectID}&scope=${scope}&redirectURL=${redirectURL}&projectSecret=${projectSecret}`;
     
-     fetch('http://localhost:5000/api/oauth/token' + search, {
+     fetch('https://fire-puzzling-beluga.glitch.me/api/oauth/token' + search, {
        method: 'GET',
        headers: {
          'Content-type': 'application/json',
@@ -63,7 +63,7 @@ function Login() {
    function getUserInfo(access_token) {
      const search = `?access_token=${access_token}`;
  
-     fetch('http://localhost:5000/api/oauth/userinfo' + search, {
+     fetch('https://fire-puzzling-beluga.glitch.me/api/oauth/userinfo' + search, {
        method: 'GET',
        headers: {
          'Content-type': 'application/json',
