@@ -8,7 +8,10 @@ import { useLogin } from './hooks/useLogin'
 
  
 function Login() {
-   const {loggedIn, handleLogin} = useLogin()
+   const {loggedIn, handleLogin, loading} = useLogin()
+   console.log(loggedIn, 'yaaaay')
+
+   
   return (
     <><Header />
      <div className='text-center mt-10 p-4'>
@@ -27,7 +30,7 @@ function Login() {
          <button  type="button"
          className="inline-block px-6 py-2 border-2 text-white font-medium bg-green-500
          text-xs leading-tight uppercase rounded hover:bg-black focus:outline-none
-         focus:ring-0 transition duration-150 ease-in-out mr-4 mt-5" onClick={handleLogin}>Login with Ndejje University</button></>
+         focus:ring-0 transition duration-150 ease-in-out mr-4 mt-5" onClick={handleLogin}>{loading ? 'Logging...': 'Login with Ndejje University'}</button></>
     }
       </div> 
     </>

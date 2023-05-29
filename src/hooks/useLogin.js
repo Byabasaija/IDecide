@@ -1,95 +1,107 @@
-import { useGlobalState, setGlobalState } from '../store'
-import React, { useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react';
 
- export const useLogin = () => {
-    const [isLogged] =  useGlobalState('isLogged')
-    const [loggedIn, setLoggedIn] = useState(false)
-   const [loading, setLoading] = useState(false)
+export const useLogin = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState({});
 
-   const projectID = 'IDecideVotingApp.myapp.in'
-   const scope = 'full'
-   const redirectURL = 'http://localhost:3000'
- 
-  
+  const projectID = 'IDecideVotingDapp.myapp.in';
+  const scope = 'full';
+  const redirectURL = 'https://i-decide.vercel.app';
 
-   useEffect(() => {
-      const user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : false;
-      if(user){
-          setLoggedIn(true)
-          setGlobalState('user_name', user.user_name);
-          setGlobalState('role', user.role);
-      }        
-  }, []);
- 
-   const handleLogin = (e) =>{
-    e.preventDefault()
-    setLoading(true)
-    window.location.href = `http://localhost:5000/login?projectID=${projectID}&scope=${scope}&redirectURL=${redirectURL}`
-    
-   }
 
-   useEffect(() => {
-     getAccessToken()
-   }, [loading])
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    window.location.href = `https://fire-puzzling-beluga.glitch.me/login?projectID=${projectID}&scope=${scope}&redirectURL=${redirectURL}`;
+  };
 
-   function getAccessToken() {
-     const projectSecret = '07299f8e04034332e72602fc39dea446ac4fb604b06e14a900262a61bb9ecc8e';
-     const search = window.location.search + `&projectID=${projectID}&scope=${scope}&redirectURL=${redirectURL}&projectSecret=${projectSecret}`;
-     
-     fetch('http://localhost:5000/api/oauth/token' + search, {
-       method: 'GET',
-       headers: {
-         'Content-type': 'application/json',
-       },
-     })
-       .then((response) => {
-         if (response.ok) {
-           return response.json();
-         } else {
-           throw new Error('Failed to get access token');
-         }
-       })
-       .then((jsonData) => {
-         getUserInfo(jsonData.access_token);
-        
-       })
-       .catch((error) => {
-         console.log(error);
-         // Handle error
-       });
-   }
- 
-   function getUserInfo(access_token) {
-     const search = `?access_token=${access_token}`;
- 
-     fetch('http://localhost:5000/api/oauth/userinfo' + search, {
-       method: 'GET',
-       headers: {
-         'Content-type': 'application/json',
-       },
-     })
-       .then((response) => {
-         if (response.ok) {
-           return response.json();
-         } else {
-           throw new Error('Failed to get user info');
-         }
-       })
-       .then((jsonData) => {
-        console.log(jsonData), 'yaa'  
-         sessionStorage.setItem('user', JSON.stringify({
-          'user_name': jsonData.name,
-          'logged': true,
-          'role': jsonData.role
-        }));
-        setLoading(false)
-       })
-       .catch((error) => {
-         console.log(error);
-         // Handle error
-       });
-   }
+  useEffect(() => {
+    getAccessToken();
+  }, [loggedIn]);
 
-   return {handleLogin, loggedIn, }
+  function getAccessToken() {
+    const projectSecret = 'a6a7edcbd61fe04ee445c9d4a904b05bd785b7bb9c1f4f5bf3a6ea229ba86f49';
+    const search =
+      window.location.search +
+      `&projectID=${projectID}&scope=${scope}&redirectURL=${redirectURL}&projectSecret=${projectSecret}`;
+
+    fetch('https://fire-puzzling-beluga.glitch.me/api/oauth/token' + search, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Failed to get access token');
+        }
+      })
+      .then((jsonData) => {
+        getUserInfo(jsonData.access_token);
+      })
+      .catch((error) => {
+        console.log(error);
+        // Handle error
+      });
+  }
+
+  function getUserInfo(access_token) {
+    const search = `?access_token=${access_token}`;
+
+    fetch('https://fire-puzzling-beluga.glitch.me//api/oauth/userinfo' + search, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Failed to get user info');
+        }
+      })
+      .then((jsonData) => {
+        sessionStorage.setItem(
+          'user',
+          JSON.stringify({
+            user_name: jsonData.name,
+            logged: true,
+            role: jsonData.role,
+          })
+        );
+        setLoggedIn(true);
+        setUser({
+          user_name: jsonData.name,
+          logged: true,
+          role: jsonData.role,
+        });
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        // Handle error
+      });
+  }
+
+  useEffect(() => {
+    const user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : false;
+    if(user){
+        setLoggedIn(user.logged)
+        setUser(user)
+        console.log('i rannnnn on logg chh')
+    }  
+
+}, [loggedIn]);
+
+const logout = () => {
+  sessionStorage.removeItem('user')
+  setLoggedIn(false)
+  console.log('i rannnnn')
 }
 
+  return { handleLogin, loggedIn, user, logout };
+};

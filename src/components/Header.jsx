@@ -3,8 +3,11 @@ import { connectWallet } from '../Blockchain.services'
 import { truncate, useGlobalState } from '../store'
 import ConnectButton from './ConnectButton'
 
+import {useLogin} from '../hooks/useLogin'
+
 const Header = () => {
   const [connectedAccount] = useGlobalState('connectedAccount')
+  const {loggedIn, user,handleLogin, logout} = useLogin()
 
   return (
     <div className=" flex justify-between items-center p-5 shadow-md shadow-gray-300 ">
@@ -12,17 +15,17 @@ const Header = () => {
        I<span className="text-green-500">Decide</span>
       </Link>
 
-      <ConnectButton />
 
-      {/* {connectedAccount ? (
+      {loggedIn ? (
         <button
           type="button"
           className="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium
           text-xs leading-tight rounded shadow-md hover:bg-blue-700
           hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none
           focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+          onClick={logout}
         >
-          {truncate(connectedAccount, 4, 4, 11)}
+          {user.user_name}
         </button>
       ) : (
         <button
@@ -31,11 +34,11 @@ const Header = () => {
           text-xs leading-tight rounded shadow-md hover:bg-blue-700
           hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none
           focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-          onClick={connectWallet}
+          onClick={handleLogin}
         >
-          Connect Wallet
+         Login
         </button>
-      )} */}
+      )}
     </div>
   )
 }
