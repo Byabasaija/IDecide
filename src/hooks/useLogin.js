@@ -7,7 +7,7 @@ export const useLogin = () => {
 
   const projectID = 'IDecideVotingDapp.myapp.in';
   const scope = 'full';
-  const redirectURL = 'https://i-decide.vercel.app';
+  const redirectURL = 'https://i-decide.vercel.app/';
 
 
   const handleLogin = (e) => {
