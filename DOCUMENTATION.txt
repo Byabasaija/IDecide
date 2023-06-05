@@ -1,0 +1,16 @@
+=====IDECIDE VOTING APP======
+
+This serves as the user manual for idecide voting app. 
+
+INTRODUCTION.
+
+Idecide voting app is a blockchain based voting app designed for small institutions like schools, organizations etc that wish to conduct a free and fair election process but are faced with challenges related to transparency, trust and accountability. 
+
+This projects mine goal is to decentralise some of the processes and make them as transparent as possible. 
+
+1.Authentication
+When a user visits the app, they are directed to a login page with a button to sign in with thier instition. As an example, I used Ndejje University. 
+A user needs to be part of the instition and has an account with the university. 
+On clicking, a user is redirected to a page where they are prompted to allow th process to continue
+
+
