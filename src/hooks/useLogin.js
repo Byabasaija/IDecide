@@ -96,7 +96,7 @@ export const useLogin = () => {
        
     }  
 
-}, [isLogged]);
+}, []);
 
 const logout = () => {
   sessionStorage.removeItem('user')

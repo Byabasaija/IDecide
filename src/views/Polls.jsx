@@ -7,9 +7,9 @@ import React, {useEffect} from 'react'
 const ViewPolls = () => {
   const [polls] = useGlobalState('polls')
   const [connectedAccount] = useGlobalState('connectedAccount')
-  const [role] = useGlobalState('role')
-  const isAdmin = role == 'Admin' ? true : false
-  
+  const [user] = useGlobalState('user')
+  const isAdmin = user.role == 'Admin' ? true : false
+  console.log(user)
   useEffect(() => {
     if(connectedAccount){
       async function retrievePolls(){
