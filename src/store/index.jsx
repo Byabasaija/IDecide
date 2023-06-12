@@ -50,6 +50,23 @@ const toHex = (str) => {
   return result.slice(0, 6)
 }
 
+  
+  
+function findWinner(array) {
+  let maxVotes = -1;
+  let winner = null;
+
+  for (let i = 0; i < array.length; i++) {
+    const obj = array[i];
+    if (obj.votes > maxVotes) {
+      maxVotes = obj.votes;
+      winner = obj;
+    }
+  }
+
+  return winner;
+}
+
 export {
   getGlobalState,
   useGlobalState,
@@ -57,4 +74,5 @@ export {
   truncate,
   toDate,
   toHex,
+  findWinner,
 }

@@ -6,8 +6,9 @@ import ConnectButton from './ConnectButton'
 import {useLogin} from '../hooks/useLogin'
 
 const Header = () => {
-  const [connectedAccount] = useGlobalState('connectedAccount')
-  const {loggedIn, user,handleLogin, logout} = useLogin()
+  const [isLogged] = useGlobalState('isLogged')
+  const [user] = useGlobalState('user')
+  const {handleLogin, logout} = useLogin()
 
   return (
     <div className=" flex justify-between items-center p-5 shadow-md shadow-gray-300 ">
@@ -16,7 +17,7 @@ const Header = () => {
       </Link>
 
 
-      {loggedIn ? (
+      {isLogged ? (
         <button
           type="button"
           className="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium
@@ -25,7 +26,7 @@ const Header = () => {
           focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
           onClick={logout}
         >
-          {user.user_name}
+          {user.user_name? user.user_name: ''}
         </button>
       ) : (
         <button

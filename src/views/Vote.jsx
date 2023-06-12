@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getPoll, contest, listContestants, vote } from '../Blockchain.services'
@@ -10,6 +10,8 @@ const Vote = () => {
   const [poll] = useGlobalState('poll')
   const [connectedAccount] = useGlobalState('connectedAccount')
   const [contestants] = useGlobalState('contestants')
+  // const [winner, setWinner] = useState(null);
+  
 
   const handleContest = async () => {
     await toast.promise(
@@ -39,6 +41,10 @@ const Vote = () => {
     await getPoll(id)
     await listContestants(id)
   }, [])
+
+  const winner = contestants.length > 0 &&contestants.reduce((prev, current) =>
+    prev.votes > current.votes ? prev : current
+  );
 
   return (
     <div className="w-full md:w-4/5 mx-auto p-4">
@@ -92,7 +98,7 @@ const Vote = () => {
             }
             
        
-            {connectedAccount.toLowerCase() == poll?.director && !poll?.deleted ? (
+            {connectedAccount.toLowerCase() == poll?.director && !poll?.deleted && !Date.now() > poll.endsAt? (
               <>
                 <button
                   type="button"
@@ -113,22 +119,29 @@ const Vote = () => {
                   Delete
                 </button>
               </>
-            ) : null}
+            ) : <h4 className="text-4xl text-black-500 font-bold">The winer is {winner.fullname} </h4>}
           </div>
         </div>
       </div>
 
       <div className="flex flex-col w-full lg:w-3/4 mx-auto">
         <div className="flex flex-col items-center">
-          {contestants.length > 0 ? (
+          {contestants.length > 0 && !Date.now() > poll.endsAt ? (
             <h4 className="text-lg font-medium uppercase mt-6 mb-3">
               Contestants
             </h4>
-          ) : null}
+          ) : contestants.length > 0 && Date.now() > poll.endsAt ? (
+            <h4 className="text-lg font-medium uppercase mt-6 mb-3">
+              Results 
+            </h4>
+          ): null}
+
+        
 
           {contestants.map((contestant, i) => (
             <Votee key={i} contestant={contestant} poll={poll} />
           ))}
+          
         </div>
       </div>
     </div>

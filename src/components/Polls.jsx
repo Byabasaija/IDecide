@@ -67,15 +67,15 @@ const Poll = ({ poll }) => {
         <div className="p-6">
           <h5 className="text-gray-900 text-xl font-medium">{poll.title}</h5>
           <small className="font-bold mb-4 text-xs">
-            {Date.now() > poll.startsAt && poll.endsAt > poll.startsAt ? (
+            {Date.now() > poll.startsAt && Date.now()< poll.endsAt ? (
               <span className="text-green-700">Started</span>
             ) : Date.now() > poll.endsAt ? (
               <span className="text-red-700">
-                {convertTimestamp(poll?.endsAt)}
+                {`Ended on ${convertTimestamp(poll?.endsAt)}`}
               </span>
             ) : (
               <span className="text-gray-500">
-                {convertTimestamp(poll?.startsAt)}
+                {`Starts on ${convertTimestamp(poll?.startsAt)}`}
               </span>
             )}
           </small>
@@ -90,7 +90,7 @@ const Poll = ({ poll }) => {
           active:shadow-lg transition duration-150 ease-in-out"
             onClick={() => navigate('/polls/' + poll.id)}
           >
-            Enter
+           { Date.now() > poll.endsAt ? 'View Results' : 'Enter'}
           </button>
         </div>
       </div>

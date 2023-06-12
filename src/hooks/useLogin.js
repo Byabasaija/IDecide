@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from 'react';
+import { setGlobalState, useGlobalState } from '../store';
 
 export const useLogin = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState({});
+ const [isLogged] = useGlobalState('isLogged')
+ 
 
   const projectID = 'IDecideVotingDapp.myapp.in';
   const scope = 'full';
-  const redirectURL = 'https://i-decide.vercel.app/';
+  const redirectURL = 'http://localhost:3000/';
 
 
   const handleLogin = (e) => {
     e.preventDefault();
-    setLoading(true);
+
     window.location.href = `https://fire-puzzling-beluga.glitch.me/login?projectID=${projectID}&scope=${scope}&redirectURL=${redirectURL}`;
   };
 
   useEffect(() => {
     getAccessToken();
-  }, [loggedIn]);
+  }, [isLogged]);
 
   function getAccessToken() {
     const projectSecret = 'a6a7edcbd61fe04ee445c9d4a904b05bd785b7bb9c1f4f5bf3a6ea229ba86f49';
@@ -73,13 +73,14 @@ export const useLogin = () => {
             role: jsonData.role,
           })
         );
-        setLoggedIn(true);
-        setUser({
+        setGlobalState('user', {
           user_name: jsonData.name,
           logged: true,
           role: jsonData.role,
-        });
-        setLoading(false);
+        } )
+        setGlobalState('isLogged', true)
+      
+     
       })
       .catch((error) => {
         console.log(error);
@@ -90,18 +91,18 @@ export const useLogin = () => {
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : false;
     if(user){
-        setLoggedIn(user.logged)
-        setUser(user)
-        console.log('i rannnnn on logg chh')
+      setGlobalState('isLogged', user.logged)
+      setGlobalState('user', user)
+       
     }  
 
-}, [loggedIn]);
+}, [isLogged]);
 
 const logout = () => {
   sessionStorage.removeItem('user')
-  setLoggedIn(false)
-  console.log('i rannnnn')
+  setGlobalState('isLogged', false)
+ 
 }
 
-  return { handleLogin, loggedIn, user, logout };
+  return { handleLogin, isLogged, logout };
 };

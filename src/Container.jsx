@@ -14,7 +14,7 @@ function Container() {
     const [loaded, setLoaded] = useState(false)
     const { setTheme } = useWeb3ModalTheme()
     const [verified, setVerified] = useState()
-    const [user_name] = useGlobalState('user_name')
+    const [user] = useGlobalState('user')
   
     const { address, isConnected } = useAccount()
 
@@ -40,7 +40,7 @@ function Container() {
          <App/>:
          <>
          <h2 className="text-3xl text-black-600 font-bold">
-         Welcome <span className="text-green-500">{user_name}</span>
+         Welcome <span className="text-green-500">{user.user_name}</span>
        </h2>
        <h1 className="text-5xl text-black-600 font-bold">
          Connect to your <span className="text-green-500">wallet</span>
