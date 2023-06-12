@@ -94,11 +94,12 @@ const Vote = () => {
             onClick={handleContest}
           >
             Contest
+            {console.log(poll, 'yaaay')}
           </button>
             }
             
        
-            {connectedAccount.toLowerCase() == poll?.director && !poll?.deleted && Date.now() > poll?.startsAt? (
+            {connectedAccount.toLowerCase() == poll?.director && !poll?.deleted && Date.now() < poll?.startsAt? (
               <>
                 <button
                   type="button"
@@ -119,7 +120,7 @@ const Vote = () => {
                   Delete
                 </button>
               </>
-            ) : !poll?.deleted && Date.now() > poll?.startsAt? <h4 className="text-4xl text-black-500 font-bold">{winner.fullname} is in lead right now!</h4>: <h4 className="text-4xl text-black-500 font-bold">The winner is {winner.fullname} </h4>}
+            ) : !poll?.deleted && Date.now() > poll?.startsAt && Date.now() < poll?.endsAt  ? <h4 className="text-4xl text-black-500 font-bold">{winner.fullname} is in lead right now!</h4>: <h4 className="text-4xl text-black-500 font-bold">The winner is {winner.fullname} </h4>}
           </div>
         </div>
       </div>
