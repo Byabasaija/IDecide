@@ -7,7 +7,7 @@ import {useLogin} from '../hooks/useLogin'
 
 const Header = () => {
   const [isLogged] = useGlobalState('isLogged')
-  const [user] = useGlobalState('user')
+  const [user] = useGlobalState('user_data')
   const {handleLogin, logout} = useLogin()
 
   return (

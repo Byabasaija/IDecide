@@ -8,6 +8,7 @@ const contractAddress = address.address
 const contractAbi = abi.abi
 let tx
 
+
 const getEtheriumContract = () => {
   const connectedAccount = getGlobalState('connectedAccount')
 
@@ -192,7 +193,7 @@ const vote = async (id, cid) => {
     if (!ethereum) return alert('Please install Metamask')
     const connectedAccount = getGlobalState('connectedAccount')
     const contract = getEtheriumContract()
-    tx = await contract.vote(id, cid, { from: connectedAccount })
+    tx = await contract.vote(id, cid, { from: connectedAccount, gasLimit: 200000 })
     await tx.wait()
     await getPoll(id)
     await listContestants(id)
@@ -208,6 +209,7 @@ const listContestants = async (id) => {
     const contestants = await contract.listContestants(id)
     setGlobalState('contestants', structuredContestants(contestants))
   } catch (error) {
+    window.alert(error.message)
     reportError(error)
   }
 }
@@ -259,4 +261,5 @@ export {
   contest,
   listContestants,
   vote,
+  reportError
 }

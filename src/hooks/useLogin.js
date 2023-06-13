@@ -73,7 +73,7 @@ export const useLogin = () => {
             role: jsonData.role,
           })
         );
-        setGlobalState('user', {
+        setGlobalState('user_data', {
           user_name: jsonData.name,
           logged: true,
           role: jsonData.role,
@@ -92,7 +92,7 @@ export const useLogin = () => {
     const user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : false;
     if(user){
       setGlobalState('isLogged', user.logged)
-      setGlobalState('user', user)
+      setGlobalState('user_data', user)
        
     }  
 

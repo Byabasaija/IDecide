@@ -10,10 +10,17 @@ const Vote = () => {
   const [poll] = useGlobalState('poll')
   const [connectedAccount] = useGlobalState('connectedAccount')
   const [contestants] = useGlobalState('contestants')
+  const [user] = useGlobalState('user')
+  const navigate = useNavigate()
   // const [winner, setWinner] = useState(null);
   
 
   const handleContest = async () => {
+    if (!user) {
+      toast('Please, register on the smart contract first...')
+      navigate('/')
+      return
+    }
     await toast.promise(
       new Promise(async (resolve, reject) => {
         await contest(id)
@@ -155,7 +162,7 @@ const Votee = ({ contestant, poll }) => {
 
   const handleVote = async (id, cid) => {
     if (!user) {
-      toast('Please, register and login in first...')
+      toast('Please, register on the smart contract first...')
       navigate('/')
       return
     }
@@ -168,7 +175,7 @@ const Votee = ({ contestant, poll }) => {
       {
         pending: 'Approve transaction...',
         success: 'Voted successfully 👌',
-        error: 'Encountered error 🤯',
+        error: 'Encountered error 🤯', 
       },
     )
   }
@@ -203,7 +210,9 @@ const Votee = ({ contestant, poll }) => {
           <span className="text-gray-600 text-sm">
             {contestant?.votes} votes
           </span>
+          {console.log(contestant, poll, 'hehe')}
           {Date.now() > poll?.startsAt && poll?.endsAt > Date.now() ? (
+            
             <button
               type="button"
               className="inline-block px-3 py-1 border-2 border-gray-800 text-gray-800

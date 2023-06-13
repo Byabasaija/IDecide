@@ -15,6 +15,7 @@ const {getGlobalState, useGlobalState, setGlobalState} = createGlobalState( {
   poll: null,
   contestants: [],
   group: null,
+  user_data: {},
   role: '',
   isLogged: false,
   user_name: ''
