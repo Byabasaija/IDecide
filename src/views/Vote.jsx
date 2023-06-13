@@ -41,7 +41,10 @@ const Vote = () => {
     const month = date.toLocaleString('en-us', { month: 'short' })
     const year = date.getFullYear()
     const dayOfMonth = date.getDate()
-    return `${day} ${dayOfMonth} ${month}, ${year}`
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    return `${day} ${dayOfMonth} ${month}, ${year} ${hours}:${minutes}`
+    
   }
 
   useEffect(async () => {
@@ -92,7 +95,7 @@ const Vote = () => {
 
         <div className="flex justify-center my-3">
           <div className="flex space-x-2">
-            {connectedAccount.toLowerCase() == poll?.director ? null :
+            {connectedAccount.toLowerCase() == poll?.director ? null :  Date.now() > poll?.startsAt? null:
             <button
             type="button"
             className="inline-block px-6 py-2 border-2 border-green-500 text-green-500
@@ -127,7 +130,7 @@ const Vote = () => {
                   Delete
                 </button>
               </>
-            ) : !poll?.deleted && Date.now() > poll?.startsAt && Date.now() < poll?.endsAt  ? <h4 className="text-4xl text-black-500 font-bold">{winner.fullname} is in lead right now!</h4>: <h4 className="text-4xl text-black-500 font-bold">The winner is {winner.fullname} </h4>}
+            ) : !poll?.deleted && Date.now() > poll?.startsAt && Date.now() < poll?.endsAt  ? <h4 className="text-4xl text-black-500 font-bold">{winner.fullname} takes the lead!</h4>: <h4 className="text-4xl text-black-500 font-bold">The winner is {winner.fullname} </h4>}
           </div>
         </div>
       </div>
@@ -158,27 +161,26 @@ const Vote = () => {
 
 const Votee = ({ contestant, poll }) => {
   const [user] = useGlobalState('user')
+  const [contestss] = useGlobalState('contestss')
   const navigate = useNavigate()
 
   const handleVote = async (id, cid) => {
     if (!user) {
-      toast('Please, register on the smart contract first...')
-      navigate('/')
-      return
+      toast.info('Please register on the smart contract first...');
+      navigate('/');
+      return;
     }
-    await toast.promise(
-      new Promise(async (resolve, reject) => {
-        await vote(id, cid)
-          .then(() => resolve())
-          .catch(() => reject())
-      }),
-      {
-        pending: 'Approve transaction...',
-        success: 'Voted successfully 👌',
-        error: 'Encountered error 🤯', 
-      },
-    )
-  }
+  
+    const toastId = toast.info('Approving transaction...', { autoClose: false });
+  
+    try {
+      await vote(id, cid);
+      toast.update(toastId, { render: 'Voted successfully 👌', type: toast.TYPE.SUCCESS, autoClose: 3000 });
+    } catch (error) {
+      toast.update(toastId, { render: `${error.message}`, type: toast.TYPE.ERROR, autoClose: false });
+    }
+  };
+
 
   return (
     <div className="flex justify-start w-full mx-auto rounded-lg bg-white shadow-lg my-2">
@@ -210,7 +212,7 @@ const Votee = ({ contestant, poll }) => {
           <span className="text-gray-600 text-sm">
             {contestant?.votes} votes
           </span>
-          {console.log(contestant, poll, 'hehe')}
+          
           {Date.now() > poll?.startsAt && poll?.endsAt > Date.now() ? (
             
             <button

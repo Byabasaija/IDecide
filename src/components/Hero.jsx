@@ -63,7 +63,7 @@ const Hero = () => {
             disabled={!connectedAccount}
             title={!connectedAccount ? 'Please connect wallet first' : null}
           >
-            Register as Voter
+            Register on the Contract
           </button>
         </>
           

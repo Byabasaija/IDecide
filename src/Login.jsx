@@ -4,6 +4,7 @@ import React, { useEffect, useState} from 'react'
 import Container from './Container'
 import Header from './components/Header'
 import { useLogin } from './hooks/useLogin'
+import Footer from './components/Footer'
 
 
  
@@ -11,7 +12,8 @@ function Login() {
    const {isLogged, handleLogin} = useLogin()
    
   return (
-    <><Header />
+    <div className='flex flex-col min-h-screen'><Header />
+     <main className="flex-1">
      <div className='text-center mt-10 p-4'>
         {isLogged ? 
         <Container/> :
@@ -31,7 +33,9 @@ function Login() {
          focus:ring-0 transition duration-150 ease-in-out mr-4 mt-5" onClick={handleLogin}>{'Login with Ndejje University'}</button></>
     }
       </div> 
-    </>
+     </main>
+      <Footer/>
+    </div>
      
     
   )

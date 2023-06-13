@@ -189,16 +189,20 @@ const contest = async (id) => {
 }
 
 const vote = async (id, cid) => {
+  {console.log(cid, 'heeelo')}
   try {
     if (!ethereum) return alert('Please install Metamask')
     const connectedAccount = getGlobalState('connectedAccount')
     const contract = getEtheriumContract()
-    tx = await contract.vote(id, cid, { from: connectedAccount, gasLimit: 200000 })
+    tx = await contract.vote(id, cid, { from: connectedAccount })
     await tx.wait()
     await getPoll(id)
     await listContestants(id)
   } catch (error) {
-    reportError(error)
+    // reportError(error)
+    console.log(error.message.split('reason="')[1].split('",')[0])
+    throw new Error(error.message.split('reason="')[1].split('",')[0])
+    
   }
 }
 
@@ -207,7 +211,9 @@ const listContestants = async (id) => {
     if (!ethereum) return alert('Please install Metamask')
     const contract = getEtheriumContract()
     const contestants = await contract.listContestants(id)
+    
     setGlobalState('contestants', structuredContestants(contestants))
+    setGlobalState('contestss', contestants)
   } catch (error) {
     window.alert(error.message)
     reportError(error)
@@ -233,8 +239,8 @@ const structuredPolls = (polls) =>
 
 const structuredContestants = (contestants) =>
   contestants
-    .map((contestant) => ({
-      id: Number(contestant.id),
+    .map((contestant, idx) => ({
+      id: idx,
       fullname: contestant.fullname,
       image: contestant.image,
       voter: contestant.voter?.toLowerCase(),

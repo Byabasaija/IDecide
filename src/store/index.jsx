@@ -8,6 +8,7 @@ const {getGlobalState, useGlobalState, setGlobalState} = createGlobalState( {
   updatePollModal: 'scale-0',
   deletePollModal: 'scale-0',
   connectedAccount: '',
+  contestss: null,
   currentUser: null,
   contract: null,
   user: null,
