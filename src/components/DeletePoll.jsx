@@ -20,8 +20,7 @@ const DeletePoll = () => {
       }),
       {
         pending: 'Approve transaction...',
-        success: 'Deleted successfully 👌',
-        error: 'Encountered error 🤯',
+       
       },
     )
 

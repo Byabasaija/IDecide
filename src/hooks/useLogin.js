@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { setGlobalState, useGlobalState } from '../store';
+import { toast } from 'react-toastify';
 
 export const useLogin = () => {
  const [isLogged] = useGlobalState('isLogged')
@@ -12,15 +13,35 @@ export const useLogin = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-
+    
     window.location.href = `https://fire-puzzling-beluga.glitch.me/login?projectID=${projectID}&scope=${scope}&redirectURL=${redirectURL}`;
   };
 
   useEffect(() => {
-    getAccessToken();
+    async function requestToken() {
+      await toast.promise(
+        new Promise(async (resolve, reject) => {
+          try {
+            await getAccessToken();
+            resolve();
+          } catch (error) {
+            reject(error);
+          }
+        }),
+        {
+          pending: 'Logging in...',
+          error: 'Failed to log in 🤯',
+        }
+      );
+    }
+  
+    requestToken();
   }, [isLogged]);
+      
+ 
 
   function getAccessToken() {
+    
     const projectSecret = 'a6a7edcbd61fe04ee445c9d4a904b05bd785b7bb9c1f4f5bf3a6ea229ba86f49';
     const search =
       window.location.search +
@@ -41,6 +62,7 @@ export const useLogin = () => {
       })
       .then((jsonData) => {
         getUserInfo(jsonData.access_token);
+        toast.success('Logged in successfuly')
       })
       .catch((error) => {
         console.log(error);

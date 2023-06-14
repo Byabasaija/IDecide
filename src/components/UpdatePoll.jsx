@@ -52,8 +52,7 @@ const UpdatePoll = () => {
       }),
       {
         pending: 'Approve transaction...',
-        success: 'Updated updated successfully 👌',
-        error: 'Encountered error 🤯',
+       
       },
     )
     closeModal()

@@ -21,8 +21,7 @@ const Hero = () => {
         }),
         {
           pending: 'Getting user...',
-          success: 'User found and retrieved successfully 👌',
-          error: 'Encountered error 🤯',
+         
         },
         navigate('/polls')
       )

@@ -50,14 +50,14 @@ function Container() {
          <App/>:
          <>
          <h2 className="text-3xl text-black-600 font-bold">
-         Welcome <span className="text-green-500">{user_data.user_name}</span>
+         Welcome <span className="text-green-500">{user_data.user_name} 🤗</span>
        </h2>
        <h1 className="text-5xl text-black-600 font-bold">
          Connect to your <span className="text-green-500">wallet</span>
        </h1>
        <p className="pt-5 text-gray-600 text-xl font-medium">
          {' '}
-        Click on the button below to connect to your wallet
+        To continue with the voting process, you need to connect your wallet below 👇
        </p>
          <button  type="button"
          className="inline-block px-6 py-2 border-2 text-white font-medium bg-green-500

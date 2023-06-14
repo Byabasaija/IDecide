@@ -31,8 +31,7 @@ const Register = () => {
       }),
       {
         pending: 'Registering...',
-        success: 'Registered successfully 👌',
-        error: 'Encountered error 🤯',
+        
       },
     )
     resetForm()

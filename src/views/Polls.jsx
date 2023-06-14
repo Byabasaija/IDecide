@@ -20,9 +20,7 @@ const ViewPolls = () => {
               .catch(() => reject())
           }),
           {
-            pending: 'Getting polls...',
-            success: 'Polls retrieved successfully 👌',
-            error: 'Encountered error 🤯',
+            pending: 'Getting polls...',    
           },
         )
       }

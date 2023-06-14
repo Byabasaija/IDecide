@@ -28,12 +28,11 @@ const Vote = () => {
           .catch(() => reject())
       }),
       {
-        pending: 'Approve transaction...',
-        success: 'Contested successfully 👌',
-        error: 'Encountered error 🤯',
+        pending: 'Approving transaction...',
+        
       },
     )
-  }
+}
 
   const convertTimestamp = (timestamp) => {
     const date = new Date(timestamp)
@@ -170,16 +169,20 @@ const Votee = ({ contestant, poll }) => {
       navigate('/');
       return;
     }
-  
-    const toastId = toast.info('Approving transaction...', { autoClose: false });
-  
-    try {
-      await vote(id, cid);
-      toast.update(toastId, { render: 'Voted successfully 👌', type: toast.TYPE.SUCCESS, autoClose: 3000 });
-    } catch (error) {
-      toast.update(toastId, { render: `${error.message}`, type: toast.TYPE.ERROR, autoClose: false });
-    }
-  };
+    await toast.promise(
+      new Promise(async (resolve, reject) => {
+        await vote(id, cid)
+          .then(() => resolve())
+          .catch(() => reject())
+      }),
+      {
+        pending: 'Approving transaction...',
+        // success: 'Polls retrieved successfully 👌',
+        // error: 'Encountered error 🤯',
+      },
+    )
+  }
+
 
 
   return (

@@ -2,6 +2,7 @@ import abi from './abis/src/contracts/IDecide.sol/IDecide.json'
 import address from './abis/contractAddress.json'
 import { getGlobalState, setGlobalState } from './store'
 import { ethers } from 'ethers'
+import { toast } from 'react-toastify'
 
 const { ethereum } = window
 const contractAddress = address.address
@@ -77,6 +78,7 @@ const createPoll = async ({ title, image, startsAt, endsAt, description }) => {
     )
     await tx.wait()
     await getPolls()
+    toast.success('Poll created successfully 👌')
   } catch (error) {
     console.log(error)
     reportError(error)
@@ -108,6 +110,7 @@ const updatePoll = async ({
     )
     await tx.wait()
     await getPolls()
+    toast.success('Poll updated successfully 👌')
   } catch (error) {
     reportError(error)
   }
@@ -122,6 +125,7 @@ const deletePoll = async (id) => {
       from: connectedAccount,
     })
     await tx.wait()
+    toast.success('Poll deleted successfully 👌')
   } catch (error) {
     reportError(error)
   }
@@ -135,6 +139,7 @@ const registerUser = async ({ fullname, image }) => {
     tx = await contract.register(image, fullname, { from: connectedAccount })
     await tx.wait()
     await getUser()
+    toast.success('Registered successfully 👌')
   } catch (error) {
     reportError(error)
   }
@@ -147,6 +152,7 @@ const getUser = async () => {
     const contract = getEtheriumContract()
     const user = await contract.users(connectedAccount)
     setGlobalState('user', user)
+    toast.success('User retrieved successfully 👌')
   } catch (error) {
     reportError(error)
   }
@@ -158,6 +164,7 @@ const getPolls = async () => {
     const contract = getEtheriumContract()
     const polls = await contract.getPolls()
     setGlobalState('polls', structuredPolls(polls))
+    toast.success('Polls retrieved successfully 👌',)
   } catch (error) {
     reportError(error)
   }
@@ -183,6 +190,7 @@ const contest = async (id) => {
     await tx.wait()
     await getPoll(id)
     await listContestants(id)
+    toast.success("Contested successfully 👌")
   } catch (error) {
     reportError(error)
   }
@@ -198,11 +206,9 @@ const vote = async (id, cid) => {
     await tx.wait()
     await getPoll(id)
     await listContestants(id)
+    toast.success("Voted successfully 👌")
   } catch (error) {
-    // reportError(error)
-    console.log(error.message.split('reason="')[1].split('",')[0])
-    throw new Error(error.message.split('reason="')[1].split('",')[0])
-    
+    reportError(error)
   }
 }
 
@@ -250,8 +256,8 @@ const structuredContestants = (contestants) =>
     .sort((a, b) => b.votes - a.votes)
 
 const reportError = (error) => {
-  console.log(error.message)
-  throw new Error('No ethereum object.')
+  const err = error.message.split('reason="')[1].split('",')[0]
+    toast.error(`${err} 🤯`)
 }
 
 export {

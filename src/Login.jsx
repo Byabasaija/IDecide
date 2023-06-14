@@ -25,7 +25,8 @@ function Login() {
        </h1>
        <p className="pt-5 text-gray-600 text-xl font-medium">
          {' '}
-        Where your decision is respected. Login to decide on your future now!
+        Where your decision is respected. <br/>
+        Login to decide on your next leader now!
        </p>
          <button  type="button"
          className="inline-block px-6 py-2 border-2 text-white font-medium bg-green-500

@@ -42,8 +42,7 @@ const CreatePoll = () => {
       }),
       {
         pending: 'Approve transaction...',
-        success: 'Created successfully 👌',
-        error: 'Encountered error 🤯',
+        
       },
     )
     closeModal()
