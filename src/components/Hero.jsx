@@ -37,7 +37,7 @@ const Hero = () => {
       </h1>
       <p className="pt-5 text-gray-600 text-xl font-medium">
         {' '}
-        Decide on your future with our powerful voting  <strong>DAPP</strong>{' '}
+        Empower your voice and shape your destiny with our revolutionary voting  <strong>DAPP</strong>{' '}
       </p>
       <div className="flex justify-center pt-10">
        

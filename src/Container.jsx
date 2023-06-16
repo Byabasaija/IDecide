@@ -17,7 +17,7 @@ function Container() {
     const [user_data] = useGlobalState('user_data')
 
     useEffect(() => {
-      const user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : false;
+      const user = JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : false;
       if(user){
         setGlobalState('isLogged', user.logged)
         setGlobalState('user_data', user)

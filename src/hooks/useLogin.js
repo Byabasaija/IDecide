@@ -87,18 +87,20 @@ export const useLogin = () => {
         }
       })
       .then((jsonData) => {
-        sessionStorage.setItem(
+        localStorage.setItem(
           'user',
           JSON.stringify({
             user_name: jsonData.name,
             logged: true,
             role: jsonData.role,
+            voted: false
           })
         );
         setGlobalState('user_data', {
           user_name: jsonData.name,
           logged: true,
           role: jsonData.role,
+          voted: false
         } )
         setGlobalState('isLogged', true)
       
@@ -111,7 +113,7 @@ export const useLogin = () => {
   }
 
   useEffect(() => {
-    const user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : false;
+    const user = JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : false;
     if(user){
       setGlobalState('isLogged', user.logged)
       setGlobalState('user_data', user)
@@ -121,7 +123,7 @@ export const useLogin = () => {
 }, [isLogged]);
 
 const logout = () => {
-  sessionStorage.removeItem('user')
+  localStorage.removeItem('user')
   setGlobalState('isLogged', false)
  
 }

@@ -13,7 +13,15 @@ const Vote = () => {
   const [user] = useGlobalState('user')
   const navigate = useNavigate()
   // const [winner, setWinner] = useState(null);
-  
+  const [user_data] = useGlobalState('user_data')
+
+
+  useEffect(() =>{
+     const user_data =JSON.parse(localStorage.getItem('user'));
+     const block_user = JSON.parse(localStorage.getItem('block_user'))
+     setGlobalState('user_data', user_data)
+     setGlobalState('user', block_user)
+  }, [])
 
   const handleContest = async () => {
     if (!user) {
@@ -52,8 +60,10 @@ const Vote = () => {
   }, [])
 
   const winner = contestants.length > 0 &&contestants.reduce((prev, current) =>
-    prev.votes > current.votes ? prev : current
+    prev.votes > current.votes ? prev : prev.votes == current.votes ? 'Tie' : current
   );
+
+  const leaderboard = winner.fullname ? `${winner.fullname} takes the lead!` : 'Its a tie!'
 
   return (
     <div className="w-full md:w-4/5 mx-auto p-4">
@@ -94,7 +104,7 @@ const Vote = () => {
 
         <div className="flex justify-center my-3">
           <div className="flex space-x-2">
-            {connectedAccount.toLowerCase() == poll?.director ? null :  Date.now() > poll?.startsAt? null:
+            {connectedAccount.toLowerCase() == poll?.director ? null :  Date.now() > poll?.startsAt? null: user_data.role == 'Candidate' ?
             <button
             type="button"
             className="inline-block px-6 py-2 border-2 border-green-500 text-green-500
@@ -103,9 +113,8 @@ const Vote = () => {
             onClick={handleContest}
           >
             Contest
-            {console.log(poll, 'yaaay')}
           </button>
-            }
+            : null}
             
        
             {connectedAccount.toLowerCase() == poll?.director && !poll?.deleted && Date.now() < poll?.startsAt? (
@@ -129,7 +138,7 @@ const Vote = () => {
                   Delete
                 </button>
               </>
-            ) : !poll?.deleted && Date.now() > poll?.startsAt && Date.now() < poll?.endsAt  ? <h4 className="text-4xl text-black-500 font-bold">{winner.fullname} takes the lead!</h4>: <h4 className="text-4xl text-black-500 font-bold">The winner is {winner.fullname} </h4>}
+            ) : !poll?.deleted && Date.now() > poll?.startsAt && Date.now() < poll?.endsAt  ? <h4 className="text-4xl text-black-500 font-bold">{leaderboard}</h4>: <h4 className="text-4xl text-black-500 font-bold">The winner is {winner.fullname} </h4>}
           </div>
         </div>
       </div>
@@ -162,6 +171,15 @@ const Votee = ({ contestant, poll }) => {
   const [user] = useGlobalState('user')
   const [contestss] = useGlobalState('contestss')
   const navigate = useNavigate()
+  const [user_data] = useGlobalState('user_data')
+
+
+  useEffect(() =>{
+     const user_data =JSON.parse(localStorage.getItem('user'));
+     const block_user = JSON.parse(localStorage.getItem('block_user'))
+     setGlobalState('user_data', user_data)
+     setGlobalState('user', block_user)
+  }, [])
 
   const handleVote = async (id, cid) => {
     if (!user) {
@@ -216,7 +234,7 @@ const Votee = ({ contestant, poll }) => {
             {contestant?.votes} votes
           </span>
           
-          {Date.now() > poll?.startsAt && poll?.endsAt > Date.now() ? (
+          {Date.now() > poll?.startsAt && poll?.endsAt > Date.now() && !user_data.voted? (
             
             <button
               type="button"

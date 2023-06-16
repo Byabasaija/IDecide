@@ -152,6 +152,7 @@ const getUser = async () => {
     const contract = getEtheriumContract()
     const user = await contract.users(connectedAccount)
     setGlobalState('user', user)
+    localStorage.setItem('block_user', JSON.stringify(user))
     toast.success('User retrieved successfully 👌')
   } catch (error) {
     reportError(error)
@@ -197,17 +198,22 @@ const contest = async (id) => {
 }
 
 const vote = async (id, cid) => {
-  {console.log(cid, 'heeelo')}
+  const user = JSON.parse(localStorage.getItem('user'));
+
   try {
     if (!ethereum) return alert('Please install Metamask')
     const connectedAccount = getGlobalState('connectedAccount')
     const contract = getEtheriumContract()
     tx = await contract.vote(id, cid, { from: connectedAccount })
+    
     await tx.wait()
     await getPoll(id)
     await listContestants(id)
+    user.voted = true;
+    localStorage.setItem('user', JSON.stringify(user));
     toast.success("Voted successfully 👌")
   } catch (error) {
+    
     reportError(error)
   }
 }
@@ -221,7 +227,7 @@ const listContestants = async (id) => {
     setGlobalState('contestants', structuredContestants(contestants))
     setGlobalState('contestss', contestants)
   } catch (error) {
-    window.alert(error.message)
+    
     reportError(error)
   }
 }
