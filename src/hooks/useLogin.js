@@ -8,13 +8,13 @@ export const useLogin = () => {
 
   const projectID = 'IDecideVotingDapp.myapp.in';
   const scope = 'full';
-  const redirectURL = 'https://i-decide.vercel.app/';
+  const redirectURL = 'http://localhost:3000/';
 
 
   const handleLogin = (e) => {
     e.preventDefault();
     
-    window.location.href = `https://fire-puzzling-beluga.glitch.me/login?projectID=${projectID}&scope=${scope}&redirectURL=${redirectURL}`;
+    window.location.href = `http://localhost:5000/login?projectID=${projectID}&scope=${scope}&redirectURL=${redirectURL}`;
   };
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export const useLogin = () => {
       window.location.search +
       `&projectID=${projectID}&scope=${scope}&redirectURL=${redirectURL}&projectSecret=${projectSecret}`;
 
-    fetch('https://fire-puzzling-beluga.glitch.me/api/oauth/token' + search, {
+    fetch('http://localhost:5000/api/oauth/token' + search, {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
@@ -73,7 +73,7 @@ export const useLogin = () => {
   function getUserInfo(access_token) {
     const search = `?access_token=${access_token}`;
 
-    fetch('https://fire-puzzling-beluga.glitch.me//api/oauth/userinfo' + search, {
+    fetch('http://localhost:5000/api/oauth/userinfo' + search, {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
@@ -92,14 +92,15 @@ export const useLogin = () => {
           JSON.stringify({
             user_name: jsonData.name,
             logged: true,
-            role: jsonData.role,
-            voted: false
+            reg_no: jsonData.reg_no,
+            voted: false,
+
           })
         );
         setGlobalState('user_data', {
           user_name: jsonData.name,
           logged: true,
-          role: jsonData.role,
+          reg_no: jsonData.reg_no,
           voted: false
         } )
         setGlobalState('isLogged', true)

@@ -15,6 +15,9 @@ const Vote = () => {
   // const [winner, setWinner] = useState(null);
   const [user_data] = useGlobalState('user_data')
 
+  const role = localStorage.getItem('role')
+  const isCandidate = role.toUpperCase() != 'CANDIDATE'
+
 
   useEffect(() =>{
      const user_data =JSON.parse(localStorage.getItem('user'));
@@ -104,7 +107,7 @@ const Vote = () => {
 
         <div className="flex justify-center my-3">
           <div className="flex space-x-2">
-            {connectedAccount.toLowerCase() == poll?.director ? null :  Date.now() > poll?.startsAt? null: user_data.role == 'Candidate' ?
+            {connectedAccount.toLowerCase() == poll?.director ? null :  Date.now() > poll?.startsAt? null: isCandidate ?
             <button
             type="button"
             className="inline-block px-6 py-2 border-2 border-green-500 text-green-500
@@ -172,7 +175,8 @@ const Votee = ({ contestant, poll }) => {
   const [contestss] = useGlobalState('contestss')
   const navigate = useNavigate()
   const [user_data] = useGlobalState('user_data')
-
+  const role = localStorage.getItem('role')
+  const isNotAdmin = role.toUpperCase() != 'ADMIN'
 
   useEffect(() =>{
      const user_data =JSON.parse(localStorage.getItem('user'));
@@ -230,10 +234,16 @@ const Votee = ({ contestant, poll }) => {
         </div>
 
         <div className="flex justify-start items-center">
+          {Date.now() > poll?.startsAt && poll?.endsAt > Date.now() ?
           <span className="text-gray-600 text-sm">
             {contestant?.votes} votes
-          </span>
-          
+          </span>:poll?.endsAt < Date.now() ?
+          <span className="text-gray-600 text-sm">
+            {contestant?.votes} votes
+          </span>:
+          <span className="text-gray-600 text-sm">
+          Poll hasn't started
+        </span>}
           {Date.now() > poll?.startsAt && poll?.endsAt > Date.now() && !user_data.voted? (
             
             <button

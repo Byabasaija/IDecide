@@ -2,13 +2,39 @@ import { setGlobalState, useGlobalState } from '../store'
 import { getUser } from '../Blockchain.services'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
-
+import { useEffect } from 'react'
+import axios from 'axios';
 
 
 const Hero = () => {
-  const [user] = useGlobalState('user')
+  
   const [connectedAccount] = useGlobalState('connectedAccount')
+ 
   const navigate = useNavigate()
+
+  useEffect(()=>{
+  const user_data = localStorage.getItem('user')
+  const reg_no = user_data.reg_no ?? ''
+  axios.get('http://localhost:1337/api/officials')
+  .then((res) => {
+    const officials = res.data.data || []; // Access the "data" property of the response
+
+    for (let i = 0; i < officials.length; i++) {
+      if (officials[i].attributes.reg_no === reg_no) { // Access the "reg_no" property using dot notation
+        setGlobalState('role', officials[i].attributes.role); // Access the "role" property using dot notation
+        localStorage.setItem('role', officials[i].attributes.role); // Access the "role" property using dot notation
+        break; // Exit the loop once a match is found (optional)
+      }
+    }
+    toast.success('Roles set successfuly 👌')
+  })
+  
+  .catch((error) => {
+    toast.error(`${error} 🤯`)
+  });
+  },[])
+
+  
 
   const retrieveUser = async (e) =>{
     e.preventDefault()
